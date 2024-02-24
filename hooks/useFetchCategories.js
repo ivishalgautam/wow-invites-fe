@@ -1,11 +1,14 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { endpoints } from "../utils/endpoints.js";
 import http from "@/utils/http.js";
 
-const fetchCategories = async () => {
-  return await http().get(endpoints.categories.getAll);
+export const fetchCategories = async (page = 1, limit = 10) => {
+  console.log({ page, limit });
+  return await http().get(
+    `${endpoints.categories.getAll}?page=${page}&limit=${limit}`,
+  );
 };
 
-export function useFetchCategories() {
-  return useQuery(["categories"], () => fetchCategories());
+export function useFetchCategories(page, limit) {
+  return useQuery(["categories"], () => fetchCategories(page, limit));
 }

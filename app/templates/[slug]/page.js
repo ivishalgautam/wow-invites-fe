@@ -6,7 +6,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 export default function Page({ params: { slug } }) {
-  console.log({ slug });
   const { data } = useQuery({
     queryKey: [slug],
     queryFn: fetchTemplate,
@@ -15,7 +14,6 @@ export default function Page({ params: { slug } }) {
   async function fetchTemplate() {
     return await http().get(`${endpoints.templates.getAll}/getBySlug/${slug}`);
   }
-  console.log({ data });
   return (
     <div className="flex items-center justify-center">
       <div>
@@ -27,7 +25,7 @@ export default function Page({ params: { slug } }) {
           className="rounded-lg"
         ></video>
         <div className="py-2">
-          <Button variant="primary" className="w-full">
+          <Button variant="default" className="w-full">
             <Link href={`/templates/${slug}/edit?page=1`}>Customise Video</Link>
           </Button>
         </div>

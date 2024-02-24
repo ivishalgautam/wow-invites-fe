@@ -3,6 +3,7 @@ import "./globals.css";
 import { Toaster } from "sonner";
 import Navbar from "@/components/Navbar";
 import QueryClientProvider from "@/components/QueryClientProvider";
+import Footer from "@/components/Footer";
 
 export const metadata = {
   title: "Wow invites",
@@ -14,12 +15,14 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body
         suppressHydrationWarning={true}
-        className={`${GeistSans.className}`}
+        className={`${GeistSans.className} h-screen`}
       >
         <Toaster />
         <QueryClientProvider>
           <Navbar />
-          {children}
+          <main className="h-[calc(100vh-80px)]">
+            {children} <Footer />
+          </main>
         </QueryClientProvider>
       </body>
     </html>

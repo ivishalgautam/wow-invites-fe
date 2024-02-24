@@ -20,4 +20,7 @@ export const endpoints = {
     upload: "/upload/files",
     getFiles: "/upload",
   },
+  banners: {
+    getAll: "/banners",
+  },
 };

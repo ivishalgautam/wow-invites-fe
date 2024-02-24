@@ -86,18 +86,26 @@ export function P({ children, className }) {
   );
 }
 
-export function Blockquote({ children }) {
+export function Blockquote({ children, className }) {
   return (
-    <blockquote className="mt-6 border-l-2 pl-6 italic">{children}</blockquote>
+    <blockquote className={cn("mt-6 border-l-2 pl-6 italic", className)}>
+      {children}
+    </blockquote>
   );
 }
 
-export function Large({ children }) {
-  return <div className="text-lg font-semibold">{children}</div>;
+export function Large({ children, className }) {
+  return (
+    <div className={cn("text-lg font-semibold", className)}>{children}</div>
+  );
 }
 
-export function Small({ children }) {
-  return <small className="text-sm font-medium leading-none">{children}</small>;
+export function Small({ children, className }) {
+  return (
+    <small className={cn("text-sm font-medium leading-none", className)}>
+      {children}
+    </small>
+  );
 }
 
 export function Muted({ children, className }) {

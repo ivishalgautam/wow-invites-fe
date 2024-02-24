@@ -1,3 +1,4 @@
+"use client";
 import { formatDuration } from "@/utils/formatDuration";
 import React, { useRef, useState } from "react";
 
@@ -38,7 +39,7 @@ export default function VideoThumbnail({ src }) {
         <span className="absolute right-0 top-0 rounded bg-black px-1 py-0.5 text-white">
           {duration}
         </span>
-        <video width="400" preload="metadata">
+        <video width="400" preload="metadata" className="rounded-md">
           <source
             src={`${process.env.NEXT_PUBLIC_IMAGE_DOMAIN}/${src}#t=0.4`}
             type="video/mp4"
