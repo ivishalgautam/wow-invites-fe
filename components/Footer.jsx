@@ -4,10 +4,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaFacebookF, FaYoutube, FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import { usePathname } from "next/navigation";
 
 export function Footer() {
+  const pathname = usePathname();
   return (
-    <>
+    !["/signin", "/signup"].includes(pathname) && (
       <footer className="relative z-10 bg-primary pb-10 pt-20 text-white ">
         <div className="container">
           <div className="-mx-4 flex flex-wrap">
@@ -171,7 +173,7 @@ export function Footer() {
           </span>
         </div>
       </footer>
-    </>
+    )
   );
 }
 

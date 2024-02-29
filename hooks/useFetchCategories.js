@@ -3,7 +3,6 @@ import { endpoints } from "../utils/endpoints.js";
 import http from "@/utils/http.js";
 
 export const fetchCategories = async (page = 1, limit = 10) => {
-  console.log({ page, limit });
   return await http().get(
     `${endpoints.categories.getAll}?page=${page}&limit=${limit}`,
   );

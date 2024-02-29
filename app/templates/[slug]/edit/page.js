@@ -15,9 +15,18 @@ import { toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
 import { getDeliverDate } from "@/utils/date";
 import { Label } from "@/components/ui/label";
+import { useContext } from "react";
+import { MainContext } from "@/store/context";
 
 const createQuery = (data) => {
-  return http().post(endpoints.queries.getAll, data);
+  return http().post(endpoints.payment, data);
+};
+
+const makePayment = async (data) => {
+  return await http().post(endpoints.payment, {
+    amount: 1000,
+    ...data,
+  });
 };
 
 export default function Page({ params: { slug } }) {
@@ -32,6 +41,7 @@ export default function Page({ params: { slug } }) {
     trigger,
     formState: { errors },
   } = useForm();
+  const { user } = useContext(MainContext);
   const [details, setDetails] = useState([]);
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -61,6 +71,19 @@ export default function Page({ params: { slug } }) {
     },
   });
 
+  const paymentMutation = useMutation(makePayment, {
+    onSuccess: (data) => {
+      router.replace(data);
+    },
+    onError: (error) => {
+      if (isObject(error)) {
+        return toast.error(error.message);
+      } else {
+        toast.error(error);
+      }
+    },
+  });
+
   if (isLoading) {
     return <div>loading...</div>;
   }
@@ -70,44 +93,38 @@ export default function Page({ params: { slug } }) {
   const maxPageNumber = Math.max(
     ...Object.keys(fields).map((d) => parseInt(d)),
   );
-
   const onSubmit = async (data) => {
-    console.log({ data });
+    if (!user) return toast.warning("Please signin first!");
 
     const payload = {
       details: details,
-      template_id: id,
+      slug: slug,
       delivery_date: moment(getDeliverDate()).format("DD-MM-YYYY"),
     };
 
-    handleCreate(payload);
-  };
-
-  const makePayment = async () => {
-    try {
-      const resp = await http().post(endpoints.payment, { amount: 1000 });
-      console.log({ resp });
-      router.push(resp);
-    } catch (error) {
-      console.log({ error });
-    }
+    handlePayment(payload);
   };
 
   const handlePageChange = async (pageNum) => {
-    const checkFields = fields[page]?.map(({ name }) => name);
-    const triggers = await trigger([...checkFields]);
+    const checkFields = fields[page]?.map(({ id, name }) => ({ id, name }));
+    const fieldsName = checkFields?.map(({ name }) => name);
+    const triggers = await trigger([...fieldsName]);
 
+    console.log(getValues([...fieldsName]));
     if (!triggers) return;
-
+    // console.log(getValues([...checkFields.map(({ name }) => name)]));
     setDetails((prev) =>
       !prev.map((pr) => pr.page_number).includes(page)
         ? [
             ...prev,
-            Object.assign(
-              { page_number: page },
-              ...checkFields.map((d, ind) => ({
-                [d]: getValues([...checkFields])[ind],
-              })),
+            ...checkFields.map((d, ind) =>
+              Object.assign(
+                { page_number: page },
+                {
+                  value: getValues([...fieldsName][ind]),
+                  field_id: checkFields[ind].id,
+                },
+              ),
             ),
           ]
         : [...prev],
@@ -115,9 +132,14 @@ export default function Page({ params: { slug } }) {
 
     router.push(`?page=${pageNum}`);
   };
+  console.log(details);
 
   async function handleCreate(data) {
     createMutation.mutate(data);
+  }
+
+  async function handlePayment(data) {
+    paymentMutation.mutate(data);
   }
   return (
     <section className="my-10 flex h-full items-center justify-center">
@@ -241,9 +263,9 @@ export default function Page({ params: { slug } }) {
                     </>
                   ) : (
                     <Button
-                      type="button"
+                      type="submit"
                       className="col-span-3"
-                      onClick={() => makePayment()}
+                      // onClick={() => makePayment()}
                     >
                       Submit
                     </Button>

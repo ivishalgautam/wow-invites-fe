@@ -18,10 +18,9 @@ export default function SearchInput() {
   const handleSearch = async () => {
     const searchQuery = inputRef.current.value.replace(/\s+/g, "-");
     if (!searchQuery.trim()) return setSearchResults([]);
-    // Assuming this function fetches search results based on the query
     const results = await searchTemplates(searchQuery);
     setSearchResults(results);
-    console.log({ results });
+    // console.log({ results });
   };
 
   return (

@@ -17,7 +17,7 @@ export default async function Categories({ searchParams }) {
       : 10;
   const { data, total_page } = await fetchCategories(page);
 
-  console.log(data);
+  // console.log(data);
 
   // console.log({ data });
 

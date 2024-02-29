@@ -5,7 +5,6 @@ import { useQuery } from "@tanstack/react-query";
 export async function useFetchTemplate(id) {
   async function fetchTemplate(id) {
     const data = await http().get(`${endpoints.templates.getAll}/${id}`);
-    console.log({ data });
     return data;
   }
   return useQuery({

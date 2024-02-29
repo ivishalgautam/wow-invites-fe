@@ -6,7 +6,7 @@ export default async function Page({ searchParams }) {
   const q = searchParams["q"];
 
   const data = await searchTemplates(q);
-  console.log({ data });
+  // console.log({ data });
 
   return (
     <section className="container py-14">

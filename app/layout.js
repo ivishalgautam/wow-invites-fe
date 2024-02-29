@@ -4,6 +4,7 @@ import { Toaster } from "sonner";
 import Navbar from "@/components/Navbar";
 import QueryClientProvider from "@/components/QueryClientProvider";
 import Footer from "@/components/Footer";
+import Context from "@/store/context";
 
 export const metadata = {
   title: "Wow invites",
@@ -19,10 +20,13 @@ export default function RootLayout({ children }) {
       >
         <Toaster />
         <QueryClientProvider>
-          <Navbar />
-          <main className="h-[calc(100vh-80px)]">
-            {children} <Footer />
-          </main>
+          <Context>
+            <Navbar />
+            <main className="h-[calc(100vh-80px)]">
+              {children}
+              <Footer />
+            </main>
+          </Context>
         </QueryClientProvider>
       </body>
     </html>

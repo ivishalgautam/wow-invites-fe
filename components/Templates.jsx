@@ -13,6 +13,7 @@ import Template from "./cards/Template";
 
 export default function Templates() {
   const { data, isLoading } = useFetchTemplates(true);
+  // console.log({ data });
   const breakpoints = {
     1200: {
       slidesPerView: 5,

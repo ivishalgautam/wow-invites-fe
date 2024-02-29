@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { H5, Small, Muted, P } from "../ui/typography";
+import { CiImageOn } from "react-icons/ci";
 
 export default function Template({
   id,
@@ -11,6 +12,7 @@ export default function Template({
   sale_price,
   slug,
   thumbnail,
+  total_images,
 }) {
   return (
     <Link href={`/templates/${slug}`} key={id}>
@@ -22,10 +24,16 @@ export default function Template({
           className="rounded-lg"
         />
       </div>
-      <div className="py-2">
+      <div className="space-y-1 py-2">
         <H5>{name}</H5>
+        <div className="flex items-center justify-start gap-2">
+          <CiImageOn />
+          <Small>
+            {total_images} {Number(total_images) <= 1 ? "Photo" : "Photos"}
+          </Small>
+        </div>
         {sale_price ? (
-          <div className="!m-0 flex items-center justify-start gap-2">
+          <div className="flex items-center justify-start gap-2">
             <Small className="font-semibold">₹{sale_price}</Small>
             <Muted className="line-through">₹{price}</Muted>
           </div>
